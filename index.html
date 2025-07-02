@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PEMROGRAMAN LANJUT [UAS]</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+      /* ========================================
+        PENGATURAN DASAR & SKEMA WARNA
+        Anda bisa mengubah seluruh tampilan web hanya dengan mengganti kode warna di bawah ini.
+        ========================================
+        */
+      :root {
+        --bg-color: #1a1a2e; /* Warna latar belakang utama */
+        --card-color: #16213e; /* Warna untuk 'kartu' atau panel */
+        --primary-color: #0f3460; /* Warna aksen utama */
+        --secondary-color: #e94560; /* Warna aksen kedua (untuk tombol, highlight) */
+        --font-color: #e0e0e0; /* Warna teks utama */
+        --header-font-color: #ffffff; /* Warna teks untuk judul */
+        --card-bg-color: rgba(
+          22,
+          33,
+          62,
+          0.85
+        ); /* Warna kotak biodata (transparan) */
+        --primary-text-color: #ffffff;
+        --secondary-text-color: #e0e0e0;
+        --highlight-color: #e94560; /* Warna untuk label dan ikon hover */
+        --primary: #b6895b;
+        --bg: #010101;
+      }
+
+      /* Reset & Pengaturan Dasar */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+        outline: none;
+        border: none;
+        text-decoration: none;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--font-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 2rem;
+        overflow: hidden;
+      }
+
+      h1,
+      h2 {
+        font-weight: 600;
+        color: var(--header-font-color);
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+        position: relative;
+      }
+
+      h2::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--secondary-color);
+        border-radius: 2px;
+      }
+
+      section {
+        padding: 5rem 0;
+      }
+
+      /* Navbar */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.4rem 3%;
+        background-color: rgba(1, 1, 1, 0.8);
+        border-bottom: 1px solid #513c28;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        transition: top 0.3s ease-in-out;
+      }
+
+      .navbar .navbar-nav {
+        flex: 1;
+        text-align: center;
+      }
+
+      .navbar .navbar-logo {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+        font-style: italic;
+      }
+
+      .navbar .navbar-logo span {
+        color: var(--primary);
+      }
+
+      .navbar .navbar-nav a {
+        color: #fff;
+        display: inline-block;
+        font-size: 1.3rem;
+        margin: 0 1.5rem;
+      }
+
+      .navbar .navbar-nav a:hover {
+        color: var(--primary);
+      }
+
+      .navbar .navbar-nav a::after {
+        content: "";
+        display: block;
+        padding-bottom: 0.5rem;
+        border-bottom: 0.1rem solid var(--primary);
+        transform: scaleX(0);
+        transition: 0.2s linear;
+      }
+
+      .navbar .navbar-nav a:hover::after {
+        transform: scaleX(0.5);
+      }
+
+      .navbar .navbar-extra a {
+        color: #fff;
+        margin: 0 0.5rem;
+      }
+
+      .navbar .navbar-extra a:hover {
+        color: var(--primary);
+      }
+
+      #hamburger-menu {
+        display: none;
+      }
+
+      /* Navbar search form */
+      .navbar .search-form {
+        position: absolute;
+        top: 100%;
+        right: 7%;
+        background-color: #fff;
+        width: 50rem;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: 0.3s;
+      }
+
+      .navbar .search-form.active {
+        transform: scaleY(1);
+      }
+
+      .navbar .search-form input {
+        height: 100%;
+        width: 100%;
+        font-size: 1.6rem;
+        color: var(--bg);
+        padding: 1rem;
+      }
+
+      .navbar .search-form label {
+        cursor: pointer;
+        font-size: 2rem;
+        margin-right: 1.5rem;
+        color: var(--bg);
+      }
+
+      /* Hero Section */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        background-image: url("header-bg-1.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        -webkit-mask-image: linear-gradient(
+          rgba(0, 0, 0, 1) 85%,
+          rgba(0, 0, 0, 0)
+        );
+        mask-image: linear-gradient(rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));
+      }
+
+      .hero::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 30%;
+        bottom: 0;
+        background: linear-gradient(
+          0deg,
+          rgba(1, 1, 3, 1) 8%,
+          rgba(255, 255, 255, 0) 50%
+        );
+      }
+
+      .hero .mask-container {
+        position: absolute;
+        /* background: salmon; */
+        inset: 0;
+        /* -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: cover;
+        -webkit-mask-position: center; */
+      }
+
+      .hero .content {
+        padding: 1.4rem 7%;
+        /* max-width: 60rem; */
+        width: 100%;
+        text-align: center;
+        position: fixed;
+        top: 235px;
+      }
+
+      .hero .content h1 {
+        font-size: 5em;
+        color: #fff;
+        text-shadow: 1px 1px 3px rgba(1, 1, 3, 0.5);
+        line-height: 1.2;
+      }
+
+      .hero .content h1 span {
+        /* color: var(--primary); */
+        color: red;
+      }
+
+      .hero .content p {
+        font-size: 1.6rem;
+        margin-top: 1rem;
+        line-height: 1.4;
+        font-weight: 100;
+        text-shadow: 1px 1px 3px rgba(1, 1, 3, 0.5);
+        mix-blend-mode: difference;
+      }
+
+      .hero .content .cta {
+        margin-top: 1rem;
+        display: inline-block;
+        padding: 1rem 3rem;
+        font-size: 1.4rem;
+        color: #fff;
+        background-color: var(--primary);
+        border-radius: 0.5rem;
+        box-shadow: 1px 1px 3px rgba(1, 1, 3, 0.5);
+      }
+
+      /*
+        ========================================
+        HEADER / BAGIAN ATAS
+        ========================================
+        */
+      .header {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop")
+            no-repeat center center/cover;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #fff;
+        padding: 20px;
+      }
+
+      .header-content {
+        animation: fadeIn 1.5s ease-in;
+      }
+
+      .header-content .profile-pic {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid var(--secondary-color);
+        margin-bottom: 1.5rem;
+      }
+
+      .header-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header-content p {
+        font-size: 1.5rem;
+        font-weight: 300;
+        color: var(--font-color);
+        margin-bottom: 2rem;
+      }
+
+      .social-links a {
+        color: #fff;
+        font-size: 1.8rem;
+        margin: 0 15px;
+        transition: color 0.3s ease;
+      }
+
+      .social-links a:hover {
+        color: var(--secondary-color);
+      }
+
+      /* Kontainer Utama */
+      .main-container {
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Bagian Profil Atas */
+      .profile-section {
+        margin-bottom: 2rem;
+      }
+
+      .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--highlight-color);
+        box-shadow: 0 0 20px rgba(233, 69, 96, 0.4);
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Ikon Media Sosial */
+      .social-links a {
+        color: var(--primary-text-color);
+        font-size: 1.5rem;
+        margin: 0 12px;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .social-links a:hover {
+        color: var(--highlight-color);
+        transform: scale(1.2);
+      }
+
+      /* ====================== */
+      /* Kotak Biodata */
+      /* ========================= */
+      .biodata-box {
+        background-color: var(--card-bg-color);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .biodata-list {
+        list-style: none;
+        text-align: left;
+      }
+
+      .biodata-list li {
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      .biodata-list li:last-child {
+        margin-bottom: 0;
+      }
+
+      .biodata-list .icon {
+        font-size: 1.2rem;
+        width: 30px; /* Lebar tetap untuk ikon agar rapi */
+        text-align: center;
+        margin-right: 15px;
+        color: var(--highlight-color);
+      }
+
+      .biodata-list span {
+        color: var(--secondary-text-color);
+      }
+
+      /* ========================================
+        EFEK ANIMASI SAAT SCROLL
+        ========================================
+        */
+      .reveal {
+        position: relative;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ========================================
+        BAGIAN TENTANG SAYA
+        ========================================
+        */
+      #tentang {
+        background: var(--card-color);
+      }
+
+      #tentang p {
+        font-size: 1.1rem;
+        text-align: center;
+        max-width: 800px;
+        margin: auto;
+      }
+
+      /* ========================================
+        BAGIAN KEAHLIAN
+        ========================================
+        */
+      .skills-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .skill-item {
+        background: var(--primary-color);
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: transform 0.3s, background 0.3s;
+      }
+
+      .skill-item:hover {
+        transform: translateY(-5px);
+        background: var(--secondary-color);
+      }
+
+      /* ========================================
+        BAGIAN PENGALAMAN (TIMELINE)
+        ========================================
+        */
+      #pengalaman {
+        background: var(--card-color);
+      }
+
+      .timeline {
+        position: relative;
+        max-width: 1000px;
+        margin: auto;
+      }
+
+      .timeline::after {
+        content: "";
+        position: absolute;
+        width: 4px;
+        background-color: var(--primary-color);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -2px;
+      }
+
+      .timeline-item {
+        padding: 10px 40px;
+        position: relative;
+        background-color: inherit;
+        width: 50%;
+      }
+
+      .timeline-item::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        right: -10px;
+        background-color: white;
+        border: 4px solid var(--secondary-color);
+        top: 20px;
+        border-radius: 50%;
+        z-index: 1;
+      }
+
+      .timeline-item.left {
+        left: 0;
+      }
+      .timeline-item.right {
+        left: 50%;
+      }
+
+      .timeline-item.left::before {
+        content: " ";
+        height: 0;
+        position: absolute;
+        top: 22px;
+        width: 0;
+        z-index: 1;
+        right: 30px;
+        border: medium solid var(--font-color);
+        border-width: 10px 0 10px 10px;
+        border-color: transparent transparent transparent var(--card-color);
+      }
+
+      .timeline-item.right::before {
+        content: " ";
+        height: 0;
+        position: absolute;
+        top: 22px;
+        width: 0;
+        z-index: 1;
+        left: 30px;
+        border: medium solid var(--font-color);
+        border-width: 10px 10px 10px 0;
+        border-color: transparent var(--card-color) transparent transparent;
+      }
+
+      .timeline-item.right::after {
+        left: -10px;
+      }
+      .timeline-content {
+        padding: 20px 30px;
+        background-color: var(--primary-color);
+        position: relative;
+        border-radius: 6px;
+      }
+
+      .timeline-content h3 {
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+      }
+      .timeline-content .date {
+        font-style: italic;
+        font-size: 0.9em;
+        opacity: 0.7;
+      }
+
+      /* ========================================
+        BAGIAN PORTOFOLIO
+        ========================================
+        */
+      .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .portfolio-item {
+        background: var(--card-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-out;
+      }
+
+      .portfolio-item:hover {
+        transform: translateY(-10px);
+      }
+
+      .portfolio-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .portfolio-info {
+        padding: 1.5rem;
+      }
+
+      .portfolio-info h3 {
+        color: var(--header-font-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .portfolio-info p {
+        margin-bottom: 1rem;
+      }
+
+      .portfolio-info a {
+        text-decoration: none;
+        color: var(--secondary-color);
+        font-weight: 600;
+      }
+
+      .portfolio-info a:hover {
+        text-decoration: underline;
+      }
+
+      /* ========================================
+        BAGIAN KONTAK
+        ========================================
+        */
+      #kontak {
+        background: var(--card-color);
+        text-align: center;
+      }
+
+      #kontak p {
+        max-width: 600px;
+        margin: 0 auto 2rem auto;
+        font-size: 1.1rem;
+      }
+
+      .contact-button {
+        display: inline-block;
+        background: var(--secondary-color);
+        color: white;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: background 0.3s;
+      }
+
+      .contact-button:hover {
+        background: #c73049; /* Sedikit lebih gelap dari secondary-color */
+      }
+
+      /* ========================================
+        FOOTER
+        ========================================
+        */
+      footer {
+        text-align: center;
+        padding: 2rem 0;
+      }
+
+      /* ========================================
+        PENGATURAN RESPONSIVE (UNTUK HP)
+        ========================================
+        */
+      @media (max-width: 1366px) {
+        html {
+          font-size: 75%;
+        }
+      }
+
+      @media (max-width: 768px) {
+        html {
+          font-size: 62.5%;
+        }
+
+        #hamburger-menu {
+          display: inline-block;
+        }
+
+        .navbar .navbar-nav {
+          position: absolute;
+          top: 100%;
+          right: -100%;
+          background-color: var(--card-color);
+          width: 30rem;
+          height: 100vh;
+          transition: right 0.3s ease-in-out;
+          flex-direction: column;
+          text-align: left;
+          padding-top: 2rem;
+        }
+
+        .navbar .navbar-nav.active {
+          right: 0;
+        }
+
+        .navbar .navbar-nav a {
+          color: var(--font-color);
+          display: block;
+          margin: 1.5rem;
+          padding: 0.5rem;
+          font-size: 2rem;
+        }
+
+        .navbar .navbar-nav a::after {
+          transform-origin: 0 0;
+        }
+
+        .navbar .navbar-nav a:hover::after {
+          transform: scaleX(0.2);
+        }
+
+        .navbar .search-form {
+          width: 90%;
+          right: 2rem;
+        }
+
+        .hero .content h1 {
+          font-size: 3.5em;
+        }
+
+        .timeline::after {
+          left: 20px;
+        }
+        .timeline-item {
+          width: 100%;
+          padding-left: 60px;
+          padding-right: 15px;
+        }
+        .timeline-item.left,
+        .timeline-item.right {
+          left: 0;
+        }
+        .timeline-item.left::before,
+        .timeline-item.right::before {
+          left: 45px;
+          border-color: transparent var(--card-color) transparent transparent;
+        }
+        .timeline-item.left::after,
+        .timeline-item.right::after {
+          left: 10px;
+        }
+      }
+      /* @media (max-width: 768px) {
+        h1 {
+          font-size: 2.5rem;
+        }
+        h2 {
+          font-size: 2rem;
+        }
+        .header-content p {
+          font-size: 1.2rem;
+        } */
+
+        /* Timeline di HP
+        .timeline::after {
+          left: 20px;
+        }
+        .timeline-item {
+          width: 100%;
+          padding-left: 60px;
+          padding-right: 15px;
+        }
+        .timeline-item.left,
+        .timeline-item.right {
+          left: 0;
+        }
+        .timeline-item.left::before,
+        .timeline-item.right::before {
+          left: 45px;
+          border-color: transparent var(--card-color) transparent transparent;
+        }
+        .timeline-item.left::after,
+        .timeline-item.right::after {
+          left: 10px;
+        }
+      } */
+
+      /* Keyframes untuk animasi
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      } */
+    </style>
+  </head>
+  <body>
+    <!-- ===================== -->
+    <!-- Navbar start -->
+    <!-- =====================  -->
+    <nav class="navbar">
+      <a href="#" class="navbar-logo">Instrumentation<span>Physics</span>.</a>
+
+      <div class="navbar-nav">
+        <a href="#home">HOME</a>
+        <a href="#about">ABOUT ME</a>
+        <a href="#menu">CONTENT</a>
+      </div>
+
+      <div class="navbar-extra">
+        <a href="#" id="search-button"><i data-feather="search"></i></a>
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+      </div>
+
+      <!-- Search Form start -->
+      <div class="search-form">
+        <input type="search" id="search-box" placeholder="search here..." />
+        <label for="search-box"><i data-feather="search"></i></label>
+      </div>
+      <!-- Search Form end -->
+    </nav>
+    <!-- Navbar end -->
+
+    <!-- Hero Section start -->
+    <section class="hero" id="home">
+      <div class="mask-container">
+        <main class="content">
+          <h1>Let's go learning together with fun for<span>Physics</span></h1>
+          <p>
+            <h2>
+              EXPLORE TO PROGRAMMING WEB
+              <br>
+              [UAS PEMROGRAMAN LANJUT]
+            </h2>
+          </p>
+        </main>
+      </div>
+    </section>
+    <!-- Hero Section end -->
+
+    <header class="header" id="about">
+      <div class="header-content">
+        <!-- <img
+          src="https://i.pravatar.cc/180?img=32"
+          alt="Foto Profil"
+          class="profile-pic"
+        />
+
+        <h1>IRVANZA HUGA FAUSTA</h1>
+        <p>
+          [Pekerjaan atau Bidang Anda | Contoh: Web Developer, UI/UX Designer,
+          Mahasiswa]
+        </p>
+
+        <div class="social-links">
+          <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+        </div> -->
+
+        <div class="main-container">
+          <!-- ============== BAGIAN PROFIL ATAS ============== -->
+          <div class="profile-section">
+            <!-- [GANTI INI] Ganti link foto profil Anda -->
+            <img src="foto.jpg" alt="Foto Profil" class="profile-pic" />
+
+            <!-- [GANTI INI] Ganti dengan nama Anda -->
+            <h1>IRVANZA HUGA FAUSTA</h1>
+
+            <div class="social-links">
+              <!-- [GANTI INI] Ganti '#' dengan link sosial media Anda -->
+              <a href="#" target="_blank" aria-label="LinkedIn"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+              <a href="#" target="_blank" aria-label="GitHub"
+                ><i class="fab fa-github"></i
+              ></a>
+              <a href="#" target="_blank" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" target="_blank" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+            </div>
+          </div>
+
+          <!-- ============== KOTAK BIODATA ============== -->
+          <div class="biodata-box">
+            <ul class="biodata-list">
+              <!-- [GANTI INI] Ubah semua data di bawah ini -->
+              <li>
+                <i class="fas fa-graduation-cap icon"></i>
+                <span>Majors: INSTRUMENTATION OF PHYSICS</span>
+              </li>
+              <li>
+                <i class="fas fa-id-card icon"></i>
+                <span>NIM: 11220970000032</span>
+              </li>
+              <li>
+                <i class="fas fa-university icon"></i>
+                <span>University: UIN Syarif Hidayatullah Jakarta</span>
+              </li>
+              <li>
+                <i class="fas fa-map-marker-alt icon"></i>
+                <span
+                  >Address: Jl. Kenangan Indah No. 10, Bogor, Jawa Barat</span
+                >
+              </li>
+              <li>
+                <i class="fas fa-envelope icon"></i>
+                <span>E-mail: irvanzahugafausta@email.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="menu">
+      <section id="tentang" class="reveal">
+        <div class="container">
+          <h2>INSTRUMENTATION PHYSICS</h2>
+          <p>
+            Instrumentation physics is a branch of physics that focuses on the
+            design, development, and application of tools (instruments) to
+            measure, monitor, and control physical phenomena. It combines the
+            principles of physics, electronic engineering, control, and
+            computing to produce accurate and reliable measurement systems. This
+            specialization studies instrumentation, electronics, and analyzes,
+            modifies and develops tools that can support industrial needs by
+            programming.
+          </p>
+        </div>
+      </section>
+
+      <section id="keahlian" class="reveal">
+        <div class="container">
+          <h2>SUBJECT OF INSTRUMENTATION</h2>
+          <div class="skills-grid">
+            <div class="skill-item">COMPUTER PROGRAMMING</div>
+            <div class="skill-item">SENSOR AND ACTUATOR</div>
+            <div class="skill-item">BASIC AND ADVANCED ELECTRONICS</div>
+            <div class="skill-item">EMBEDDED SYSTEMS</div>
+            <div class="skill-item">CONTROL SYSTEMS</div>
+            <div class="skill-item">MEDICAL PHYSICS INSTRUMENTATION</div>
+            <div class="skill-item">ROBOTIC</div>
+            <div class="skill-item">SIGNAL AND DIGITAL PROCESSING</div>
+            <div class="skill-item">DISTRIBUTED MEASUREMENT SYSTEMS</div>
+            <div class="skill-item">PROJECT MANAGEMENT</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pengalaman" class="reveal">
+        <div class="container">
+          <h2>FAVORITE SUBJECT</h2>
+          <div class="timeline">
+            <div class="timeline-item left reveal">
+              <div class="timeline-content">
+                <h3>COMPUTER PROGRAMMING</h3>
+                <p class="date">[5th Semester] - [6 Months to Completion]</p>
+                <p><strong>[UIN JAKARTA]</strong></p>
+                <p>
+                  Computer programming is the process of writing, testing, and
+                  maintaining a set of instructions (code) that a computer uses
+                  to perform a task or solve a particular problem. as for
+                  something that is learned, it is related to programming
+                  arduino, microcontroller, microprocessor, machine learning and
+                  so on.
+                </p>
+              </div>
+            </div>
+            <div class="timeline-item right reveal">
+              <div class="timeline-content">
+                <h3>BASIC AND ADVANCED ELECTRONICS</h3>
+                <p class="date">[5th Semester] - [6 Months to Completion]</p>
+                <p><strong>UIN JAKARTA.</strong></p>
+                <p>
+                  Basic and advanced electronics is a branch of science that
+                  studies basic electronic components ranging from how simple
+                  circuits work to regulate or process electric current to
+                  studying more complex systems and circuits, including signal
+                  processing techniques, automatic control, communications, and
+                  microcontrollers.
+                </p>
+              </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+              <div class="timeline-content">
+                <h3>SENSOR, ACTUATOR, AND EMBEDDED SYSTEM</h3>
+                <p class="date">
+                  [3rd Year of College] - [6 Months to Completion]
+                </p>
+                <p><strong>UIN JAKARTA</strong></p>
+                <p>
+                  Sensors, actuators, and embedded systems is an important part
+                  of modern electronics and control systems. Sensors are devices
+                  used to detect changes in the physical environment such as
+                  temperature, light, pressure, or motion, and convert them into
+                  electrical signals that can be read by electronic systems.
+                  Meanwhile, actuators act as devices that respond to the
+                  electrical signals by producing a physical action, such as the
+                  movement of a motor, the sound of a buzzer, or the switching
+                  on of a light. In embedded systems, sensors are used to
+                  collect data, microcontrollers process the data based on a
+                  specific program, and then give commands to actuators to
+                  perform actions. Learning this topic trains an understanding
+                  of the interaction between hardware and software in
+                  automation,
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="portofolio" class="reveal">
+        <div class="container">
+          <h2>DETAILS INSTRUMENTATION</h2>
+          <div class="portfolio-grid">
+            <div class="portfolio-item reveal">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+                alt="Proyek 1"
+              />
+              <div class="portfolio-info">
+                <h3>MACHINE LEARNING</h3>
+                <p>
+                  The concept of Machine Learning is not a new concept, so the
+                  concept of ML has been around for a while. So Machine Learning
+                  is "Field of study that gives computers the ability to learn
+                  without being explicitly programmed” Arthur Samuel, 1959"
+                </p>
+                <a href="#" target="_blank"
+                  >Click to Learn <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+
+            <div class="portfolio-item reveal">
+              <img
+                src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop"
+                alt="Proyek 2"
+              />
+              <div class="portfolio-info">
+                <h3>COMPUTER PROGRAMMING</h3>
+                <p>
+                  Computer programming is the process of designing and
+                  developing sequences of instructions, known as programs, that
+                  computers can execute to perform specific tasks. It involves
+                  several key steps, including: Coding, Testing and Debugging,
+                  Designing and Learning Algorithms
+                </p>
+                <a href="#" target="_blank"
+                  >Click to Learn <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+
+            <div class="portfolio-item reveal">
+              <img
+                src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=80&w=2072&auto=format&fit=crop"
+                alt="Proyek 3"
+              />
+              <div class="portfolio-info">
+                <h3>Internet of Things (IoT)</h3>
+                <p>
+                  IoT is a promising technology with great potential to
+                  transform various aspects of our lives. By connecting physical
+                  devices to the internet, IoT creates opportunities for
+                  automation, efficiency, and improved quality of life. However,
+                  it is important to address security challenges and
+                  infrastructure limitations in order to optimize the benefits
+                  of IoT.
+                </p>
+                <a href="#" target="_blank"
+                  >Click to Learn <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+
+            <div class="portfolio-item reveal">
+              <img
+                src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=80&w=2072&auto=format&fit=crop"
+                alt="Proyek 3"
+              />
+              <div class="portfolio-info">
+                <h3>Internet of Things (IoT)</h3>
+                <p>
+                  IoT is a promising technology with great potential to
+                  transform various aspects of our lives. By connecting physical
+                  devices to the internet, IoT creates opportunities for
+                  automation, efficiency, and improved quality of life. However,
+                  it is important to address security challenges and
+                  infrastructure limitations in order to optimize the benefits
+                  of IoT.
+                </p>
+                <a href="#" target="_blank"
+                  >Click to Learn <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+
+            <div class="portfolio-item reveal">
+              <img
+                src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=80&w=2072&auto=format&fit=crop"
+                alt="Proyek 3"
+              />
+              <div class="portfolio-info">
+                <h3>Internet of Things (IoT)</h3>
+                <p>
+                  IoT is a promising technology with great potential to
+                  transform various aspects of our lives. By connecting physical
+                  devices to the internet, IoT creates opportunities for
+                  automation, efficiency, and improved quality of life. However,
+                  it is important to address security challenges and
+                  infrastructure limitations in order to optimize the benefits
+                  of IoT.
+                </p>
+                <a href="#" target="_blank"
+                  >Click to Learn <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+
+            <div class="portfolio-item reveal">
+              <img
+                src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=80&w=2072&auto=format&fit=crop"
+                alt="Proyek 3"
+              />
+              <div class="portfolio-info">
+                <h3>Internet of Things (IoT)</h3>
+                <p>
+                  IoT is a promising technology with great potential to
+                  transform various aspects of our lives. By connecting physical
+                  devices to the internet, IoT creates opportunities for
+                  automation, efficiency, and improved quality of life. However,
+                  it is important to address security challenges and
+                  infrastructure limitations in order to optimize the benefits
+                  of IoT.
+                </p>
+                <a href="#" target="_blank"
+                  >Click to Learn <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="kontak" class="reveal">
+        <div class="container">
+          <h2>Contact Me</h2>
+          <p>
+            I am always open to discussions regarding new projects, creative ideas,
+            or the opportunity to be part of your vision. Feel free
+            to contact me.
+          </p>
+          <a href="mailto:your.email@example.com" class="contact-button"
+            >Send E-mail</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; 2025 IRVANZA HUGA FAUSTA. Creat With
+          <i class="fas fa-heart" style="color: var(--secondary-color)"></i>.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // // Fungsi untuk animasi elemen saat di-scroll
+      // function reveal() {
+      //   var reveals = document.querySelectorAll(".reveal");
+
+      //   for (var i = 0; i < reveals.length; i++) {
+      //     var windowHeight = window.innerHeight;
+      //     var elementTop = reveals[i].getBoundingClientRect().top;
+      //     var elementVisible = 150; // Jarak dari bawah layar sebelum elemen muncul
+
+      //     if (elementTop < windowHeight - elementVisible) {
+      //       reveals[i].classList.add("active");
+      //     } else {
+      //       // Hapus 'else' block jika Anda ingin animasi hanya terjadi sekali
+      //       reveals[i].classList.remove("active");
+      //     }
+      //   }
+      // }
+
+      // window.addEventListener("scroll", reveal);
+
+      // // Panggil sekali saat load untuk elemen yang sudah terlihat
+      // reveal();
+
+      // Panggil Feather Icons untuk merender semua ikon
+      feather.replace();
+
+      // --- FUNGSI UNTUK SEMUA INTERAKSI ---
+
+      // 1. Animasi elemen saat scroll (reveal effect)
+      function revealOnScroll() {
+        const reveals = document.querySelectorAll(".reveal");
+        for (let i = 0; i < reveals.length; i++) {
+          const windowHeight = window.innerHeight;
+          const elementTop = reveals[i].getBoundingClientRect().top;
+          const elementVisible = 150; // Jarak trigger
+
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          } else {
+            reveals[i].classList.remove("active");
+          }
+        }
+      }
+
+      // 2. Sembunyikan/Tampilkan Navbar saat scroll
+      let lastScrollTop = 0;
+      const navbar = document.querySelector(".navbar");
+
+      window.addEventListener("scroll", function () {
+        // Jalankan fungsi reveal on scroll
+        revealOnScroll();
+
+        // Logika untuk navbar
+        let scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+          navbar.style.top = "-100px"; // Sembunyikan navbar
+        } else {
+          navbar.style.top = "0"; // Tampilkan navbar
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      });
+
+      // Panggil sekali saat load untuk elemen yang sudah terlihat
+      revealOnScroll();
+
+      // 3. Interaksi untuk Search Form dan Hamburger Menu
+      const navbarNav = document.querySelector(".navbar-nav");
+      const searchForm = document.querySelector(".search-form");
+      const searchBox = document.querySelector("#search-box");
+      const hamburgerMenu = document.querySelector("#hamburger-menu");
+      const searchButton = document.querySelector("#search-button");
+
+      // Ketika hamburger menu di-klik
+      hamburgerMenu.onclick = (e) => {
+        navbarNav.classList.toggle("active");
+        e.preventDefault();
+      };
+
+      // Ketika tombol search di-klik
+      searchButton.onclick = (e) => {
+        searchForm.classList.toggle("active");
+        searchBox.focus();
+        e.preventDefault();
+      };
+
+      // 4. Klik di luar elemen untuk menutup menu
+      document.addEventListener("click", function (e) {
+        if (
+          !hamburgerMenu.contains(e.target) &&
+          !navbarNav.contains(e.target)
+        ) {
+          navbarNav.classList.remove("active");
+        }
+        if (
+          !searchButton.contains(e.target) &&
+          !searchForm.contains(e.target)
+        ) {
+          searchForm.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>
